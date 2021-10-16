@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_mlkit/pages/example_image_labeling/example_image_labeling_page.dart';
+import 'package:projeto_mlkit/pages/menu/menu_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/": (context) => ExampleImageLabelingPage()
+        "/": (context) => const MenuPage(),
+        "/example-image-labeling": (context) => const ExampleImageLabelingPage()
       },
     );
   }

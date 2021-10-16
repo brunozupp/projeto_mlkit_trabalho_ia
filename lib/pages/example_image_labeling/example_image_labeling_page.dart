@@ -16,6 +16,9 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
 
   final ImagePicker _picker = ImagePicker();
 
+  // Criando a instância do serviço responsável por processar a imagem
+  final imageLabeler = GoogleMlKit.vision.imageLabeler();
+
   File? file;
   List<ImageLabel> labels = [];
   
@@ -37,9 +40,6 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
     // Criando a instância da foto
     final inputImage = InputImage.fromFilePath(file!.path);
 
-    // Criando a instância do serviço responsável por processar a imagem
-    final imageLabeler = GoogleMlKit.vision.imageLabeler();
-
     try {
       // Executando processo de análise da imagem
       final List<ImageLabel> labels = await imageLabeler.processImage(inputImage);
@@ -58,6 +58,13 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
     } catch(e) {
       print(e);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    imageLabeler.close();
   }
 
   @override
