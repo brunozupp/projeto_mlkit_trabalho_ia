@@ -37,6 +37,10 @@ class _ExampleTextDetectorPageState extends State<ExampleTextDetectorPage> {
   processImage() async {
     if(file == null) return;
 
+    setState(() {
+      blocks.clear();
+    });
+
     // Criando a instância da foto
     final inputImage = InputImage.fromFilePath(file!.path);
 

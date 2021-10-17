@@ -5,22 +5,23 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projeto_mlkit/widgets/button_widget.dart';
 
-class ExampleImageLabelingPage extends StatefulWidget {
-  const ExampleImageLabelingPage({ Key? key }) : super(key: key);
+class ExampleFaceDetectorPage extends StatefulWidget {
+  const ExampleFaceDetectorPage({ Key? key }) : super(key: key);
 
   @override
-  State<ExampleImageLabelingPage> createState() => _ExampleImageLabelingPageState();
+  _ExampleFaceDetectorPageState createState() => _ExampleFaceDetectorPageState();
 }
 
-class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
+class _ExampleFaceDetectorPageState extends State<ExampleFaceDetectorPage> {
+
+  final faceDetector = GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
+    enableClassification: true,
+  ));
 
   final ImagePicker _picker = ImagePicker();
 
-  // Criando a instância do serviço responsável por processar a imagem
-  final imageLabeler = GoogleMlKit.vision.imageLabeler();
-
   File? file;
-  List<ImageLabel> labels = [];
+  List<Face> faces = [];
   
   getPhoto(ImageSource source) async {
     var photo = await _picker.pickImage(source: source);
@@ -29,7 +30,7 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
 
       setState(() {
         file = File(photo.path);
-        labels.clear();
+        faces.clear();
       });
     }
   }
@@ -38,7 +39,7 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
     if(file == null) return;
 
     setState(() {
-      labels.clear();
+      faces.clear();
     });
 
     // Criando a instância da foto
@@ -46,18 +47,35 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
 
     try {
       // Executando processo de análise da imagem
-      final List<ImageLabel> labels = await imageLabeler.processImage(inputImage);
+      final List<Face> faces = await faceDetector.processImage(inputImage);
 
       setState(() {
-        this.labels.addAll(labels);
+        this.faces.addAll(faces);
       });
 
-      for (ImageLabel label in labels) {
-        final String text = label.label;
-        final int index = label.index;
-        final double confidence = label.confidence;
+      for (Face face in faces) {
+        // final Rect boundingBox = face.boundingBox;
 
-        print("Label: $text | Index: $index | confidence: $confidence");
+        // final double? rotY = face.headEulerAngleY; // Head is rotated to the right rotY degrees
+        // final double? rotZ = face.headEulerAngleZ; // Head is tilted sideways rotZ degrees
+
+        // If landmark detection was enabled with FaceDetectorOptions (mouth, ears,
+        // eyes, cheeks, and nose available):
+        // final FaceLandmark? leftEar = face.getLandmark(FaceLandmarkType.leftEar);
+        // if (leftEar != null) {
+        //   final leftEarPos = leftEar.position;
+        // }
+
+        // If classification was enabled with FaceDetectorOptions:
+        if (face.smilingProbability != null) {
+          final smileProb = face.smilingProbability;
+          print("Sorrindo: ${smileProb.toString()}");
+        }
+
+        // If face tracking was enabled with FaceDetectorOptions:
+        // if (face.trackingId != null) {
+        //   final int id = face.trackingId;
+        // }
       }
     } catch(e) {
       print(e);
@@ -67,16 +85,14 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
   @override
   void dispose() {
     super.dispose();
-
-    imageLabeler.close();
+    faceDetector.close();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Image Labeling"),
+        title: const Text("Face Detector"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -117,22 +133,31 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
                   onPressed: () async => await processImage(),
                 ),
             
-            if(labels.isNotEmpty)
+            if(faces.isNotEmpty)
               ListView.separated(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20
+                ),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: labels.length,
+                itemCount: faces.length,
                 separatorBuilder: (_,__) => Divider(),
                 itemBuilder: (_,index) {
-                  return ListTile(
-                    title: Text(labels[index].label),
-                    subtitle: Text("Taxa de acerto: ${labels[index].confidence * 100}"),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Face ${index + 1}"),
+                      Text("Probabilidade de sorrindo: ${faces[index].smilingProbability! * 100}%"),
+                      Text("Probabilidade do olho esquerdo aberto: ${faces[index].leftEyeOpenProbability! * 100}%"),
+                      Text("Probabilidade do olho direito aberto: ${faces[index].rightEyeOpenProbability! * 100}%"),
+                    ],
                   );
                 }
               ),
           ],
         ),
-      )
+      ),
     );
   }
 }

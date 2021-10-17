@@ -32,6 +32,11 @@ class MenuPage extends StatelessWidget {
             text: "Language Detector", 
             icon: Icons.language
           ),
+          CardComponent(
+            onPressed: () => Navigator.of(context).pushNamed("/example-face-detector"), 
+            text: "Face Detector", 
+            icon: Icons.face
+          ),
         ],
       ),
     );
