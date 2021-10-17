@@ -18,12 +18,12 @@ class MenuPage extends StatelessWidget {
         mainAxisSpacing: 10,
         children: [
           CardComponent(
-            onPressed: () => Navigator.of(context).pushNamed("/"), 
+            onPressed: () => Navigator.of(context).pushNamed("/example-image-labeling"),
             text: "Image Labeling", 
             icon: Icons.image
           ),
           CardComponent(
-            onPressed: () => Navigator.of(context).pushNamed("/"), 
+            onPressed: () => Navigator.of(context).pushNamed("/example-text-detector"), 
             text: "Text Detector", 
             icon: Icons.text_fields
           ),
