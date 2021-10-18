@@ -144,7 +144,7 @@ class _ExampleTextDetectorPageState extends State<ExampleTextDetectorPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: blocks.length,
-                separatorBuilder: (_,__) => Divider(),
+                separatorBuilder: (_,__) => const Divider(),
                 itemBuilder: (_,index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

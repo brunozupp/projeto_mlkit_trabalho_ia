@@ -14,7 +14,7 @@ class ExampleFaceDetectorPage extends StatefulWidget {
 
 class _ExampleFaceDetectorPageState extends State<ExampleFaceDetectorPage> {
 
-  final faceDetector = GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
+  final faceDetector = GoogleMlKit.vision.faceDetector(const FaceDetectorOptions(
     enableClassification: true,
   ));
 
@@ -135,14 +135,14 @@ class _ExampleFaceDetectorPageState extends State<ExampleFaceDetectorPage> {
             
             if(faces.isNotEmpty)
               ListView.separated(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 10,
                   horizontal: 20
                 ),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: faces.length,
-                separatorBuilder: (_,__) => Divider(),
+                separatorBuilder: (_,__) => const Divider(),
                 itemBuilder: (_,index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

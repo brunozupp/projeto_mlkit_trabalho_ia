@@ -122,7 +122,7 @@ class _ExampleImageLabelingPageState extends State<ExampleImageLabelingPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: labels.length,
-                separatorBuilder: (_,__) => Divider(),
+                separatorBuilder: (_,__) => const Divider(),
                 itemBuilder: (_,index) {
                   return ListTile(
                     title: Text(labels[index].label),
