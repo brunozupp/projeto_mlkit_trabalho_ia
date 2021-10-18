@@ -37,6 +37,11 @@ class MenuPage extends StatelessWidget {
             text: "Face Detector", 
             icon: Icons.face
           ),
+          CardComponent(
+            onPressed: () => Navigator.of(context).pushNamed("/validate-cpf"), 
+            text: "Validar RG", 
+            icon: Icons.document_scanner
+          ),
         ],
       ),
     );
