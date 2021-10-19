@@ -39,7 +39,7 @@ class MenuPage extends StatelessWidget {
           ),
           CardComponent(
             onPressed: () => Navigator.of(context).pushNamed("/validate-cpf"), 
-            text: "Validar RG", 
+            text: "Validar CPF",
             icon: Icons.document_scanner
           ),
         ],

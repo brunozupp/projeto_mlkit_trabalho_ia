@@ -77,7 +77,7 @@ class _ValidateCpfPageState extends State<ValidateCpfPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Text Detector"),
+        title: const Text("Validador de CPF"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
